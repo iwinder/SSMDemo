@@ -20,30 +20,28 @@
     <!-- JDBC配置文件 -->
     <context:property-placeholder location="classpath:conf/jdbc.properties"/>
 
-    <!-- c3p0连接池配置 -->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="${driverClassName}"/>
-        <property name="jdbcUrl" value="${url}" />
-        <property name="user" value="${userName}" />
+    <!-- 数据库连接池配置 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="driverClassName" value="${driverClassName}"/>
+        <property name="url" value="${url}" />
+        <property name="username" value="${userName}" />
         <property name="password" value="${password}" />
-        <property name="initialPoolSize" value="${initialPoolSize}" />
-        <property name="minPoolSize" value="${minPoolSize}" />
-        <property name="maxPoolSize" value="${maxPoolSize}" />
-        <property name="acquireIncrement" value="${acquireIncrement}" />
-        <property name="maxIdleTime" value="${maxIdleTime}" />
-        <property name="maxStatements" value="${maxStatements}" />
+        <property name="initialSize" value="${initialSize}" />
+        <property name="minIdle" value="${minIdle}" />
+        <property name="maxActive" value="${maxActive}" />
+        <property name="poolPreparedStatements" value="${poolPreparedStatements}" />
+        <property name="maxOpenPreparedStatements" value="${maxOpenPreparedStatements}" />
+        <property name="connectionInitSqls" value="set names utf8mb4;"/>
     </bean>
 
     <!-- MyBatis 配置-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <!-- 显式指定Mapper文件位置 -->
-        <!--<property name="configLocation"  value="classpath:conf/SqlMapConfig.xml"/>-->
-        <!--<property name="mapperLocations" value="classpath:cn/zhonya/authPlat/entity/*Mapper.xml" />-->
         <property name="mapperLocations" value="classpath:com/windCoder/SSMDemo/entity/**/*Mapper.xml" />
 
         <!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
-        <property name="typeAliasesPackage" value="cn/zhonya/SSMDemo/entity" />
+        <property name="typeAliasesPackage" value="com/windCoder/SSMDemo/entity" />
     </bean>
 
     <!-- 事件管理 -->
@@ -59,11 +57,11 @@
 
 
     <!-- 文件上传 -->
-    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"-->
-          <!--p:defaultEncoding="utf-8"-->
-          <!--p:maxUploadSize="52428880"-->
-          <!--p:uploadTempDir="uploadTmpDir">-->
-    <!--</bean>-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+          p:defaultEncoding="utf-8"
+          p:maxUploadSize="52428880"
+          p:uploadTempDir="assets/uploadTmpDir">
+    </bean>
 
 
 
